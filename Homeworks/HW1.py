@@ -1,26 +1,20 @@
 #Student name: Huzaifa Shoeb, ID: 1925670
-#The databse is in MySQL, 11 drinks added to the table 'Drinks' with unique auto generating IDs. Following is the Python Code for Homework 1
+#Following is the Python Code for Homework 1
 
 import mysql.connector
-import creds
-from mysql.connector import Error
-from sql import create_connection
-from sql import execute_query
-from sql import execute_read_query
 
-# Create a connection to mysql database
-myCreds = creds.Creds()
-conn = create_connection(myCreds.conString, myCreds.username, myCreds.password, myCreds.dbname)
+# Connect to the MySQL database
+db_connection = mysql.connector.connect(
+    host="cis3368spring.c7ykkkkkq29g.us-east-1.rds.amazonaws.com",
+    user="admin",
+    password="saturnskyblack",
+    database="cis3368springdb"
+)
 
-# add a table for drinks
-create_drinks_table = """
-CREATE TABLE IF NOT EXISTS Drinks(
-    id INT UNSIGNED AUTO_INCREMENT NOT NULL,
-    Drink VARCHAR(255) NOT NULL,
-    Price INT NOT NULL,
-    Color VARCHAR(255) NOT NULL,
-    Description VARCHAR(255) NOT NULL,
-    PRIMARY KEY (id)
-) """
-
-execute_query(conn, create_drinks_table)
+# Function to display all the drinks in database
+def display_drinks(cursor):
+    cursor.execute("SELECT id, Drink, Price FROM Drinks")
+    drinks = cursor.fetchall()
+    
+    for drink in drinks:
+        print(f"{drink[0]} - {drink[1]}: ${drink[2]}")
