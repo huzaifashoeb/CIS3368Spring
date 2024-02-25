@@ -72,4 +72,3 @@ def delete_Tire(Tire_ID):
 if __name__ == '__main__':
     app.run(debug=True)
 
-
