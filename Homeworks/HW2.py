@@ -40,3 +40,12 @@ def get_Inventory():
 
     return jsonify({'Inventory': tires})
 
+# API Endpoint to add a new tire to Inventory
+@app.route('/api/Inventory', methods=['POST'])
+def add_tire():
+    data = request.get_json()
+    query = 'INSERT INTO Inventory (Brand, Model, Loadrating, Speedrating, Type, Stock) VALUES (%s, %s, %s, %s, %s, %s)'
+    params = (data['Brand'], data['Model'], data['Loadrating'], data['Speedrating'], data['Type'], data['Stock'])
+    sql_write_query(query, params)
+
+    return jsonify({'message': 'Tire added successfully'})
