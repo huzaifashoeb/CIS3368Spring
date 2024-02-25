@@ -49,3 +49,26 @@ def add_tire():
     sql_write_query(query, params)
 
     return jsonify({'message': 'Tire added successfully'})
+
+# API Endpoint to update the Stock column of a tire, provided a given ID
+@app.route('/api/Inventory/<int:tire_ID>', methods=['PUT'])
+def update_Stock(tire_ID):
+    data = request.get_json()
+    query = 'UPDATE Inventory SET Stock = %s WHERE ID = %s'
+    params = (data['Stock'], tire_ID)
+    sql_write_query(query, params)
+
+    return jsonify({'message': 'Stock updated successfully'})
+
+# API Endpoint to delete a tire, provided a given ID
+@app.route('/api/Inventory/<int:tire_ID>', methods=['DELETE'])
+def delete_tire(tire_ID):
+    query = 'DELETE FROM Inventory WHERE ID = %s'
+    params = (tire_ID,)
+    sql_write_query(query, params)
+
+    return jsonify({'message': 'Tire deleted successfully'})
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
