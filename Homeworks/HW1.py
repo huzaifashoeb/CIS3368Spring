@@ -1,4 +1,4 @@
-#Student name: Huzaifa Shoeb, ID: 1925670 testing pushing and pulling code
+#Student name: Huzaifa Shoeb, ID: 1925670
 #Following is the Python Code for Homework 1
 
 import mysql.connector
