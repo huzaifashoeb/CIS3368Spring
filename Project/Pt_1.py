@@ -24,3 +24,35 @@ connection = mysql.connector.connect(
      password="saturnskyblack",
      database="cis3368springdb"
        )
+
+#Below is my code for the MySQL part of this project. Including here as comments for future references.
+# CREATE TABLE Facility (
+#     id INT AUTO_INCREMENT PRIMARY KEY,
+#     Name VARCHAR(255) NOT NULL
+# );
+
+# CREATE TABLE Classroom (
+#     id INT AUTO_INCREMENT PRIMARY KEY,
+#     Capacity INT NOT NULL,
+#     Name VARCHAR(255) NOT NULL,
+#     Facility_id INT,
+#     FOREIGN KEY (Facility_id) REFERENCES Facility(id)
+# );
+
+# CREATE TABLE Teacher (
+#     id INT AUTO_INCREMENT PRIMARY KEY,
+#     Firstname VARCHAR(255) NOT NULL,
+#     Lastname VARCHAR(255) NOT NULL,
+#     Room INT,
+#     FOREIGN KEY (Room) REFERENCES Classroom(id)
+# );
+
+# CREATE TABLE Child (
+#     id INT AUTO_INCREMENT PRIMARY KEY,
+#     Firstname VARCHAR(255) NOT NULL,
+#     Lastname VARCHAR(255) NOT NULL,
+#     Age INT NOT NULL,
+#     Room INT,
+#     FOREIGN KEY (Room) REFERENCES Classroom(id)
+# );
+
