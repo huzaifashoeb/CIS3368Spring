@@ -1,7 +1,7 @@
-#Student Name: Huzaifa Shoeb, ID: 1925670
-#Project part 1 CIS 3368 (11AM to 1PM) Code
+# Student Name: Huzaifa Shoeb, ID: 1925670
+# Project part 1 CIS 3368 (11AM to 1PM) Code
 
-# Importing all the tools that might by needed for this code (SQL, Flask, Hashlib, Datetime, Creds)
+# Importing all the tools that might be needed for this code (SQL, Flask, Hashlib, Datetime, Creds)
 import mysql.connector
 from mysql.connector import Error
 from sql import create_connection
@@ -15,9 +15,8 @@ import flask
 from flask import Flask
 from flask import jsonify
 from flask import request, make_response
-from flask import abort      # Importing 'abort' from the module Flask for this part - saw this on Stack Overflow
 
-# # Connect to the MySQL database, I have put this information here so I do not have to submit multiple files, using same setup from my HW 2 submission
+# # Connect to the MySQL database
 connection = mysql.connector.connect(
      host="cis3368spring.c7ykkkkkq29g.us-east-1.rds.amazonaws.com",
      user="admin",
@@ -25,7 +24,11 @@ connection = mysql.connector.connect(
      database="cis3368springdb"
        )
 
-#Below is my code for the MySQL part of this project. Including here as comments for future references.
+#----------------------------------------------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------------------------------------
+
+#Below is my code for the MySQL part of this project. Including here as comments for future reference.
 # CREATE TABLE Facility (
 #     id INT AUTO_INCREMENT PRIMARY KEY,
 #     Name VARCHAR(255) NOT NULL
@@ -63,11 +66,30 @@ if connection.is_connected():
 # Checking if the connection to db was not successful
 def error_connecting():
     if not connection.is_connected():
-        return jsonify({"message": "There was an Error in establishing connection to the MySQL Database"}), 500
+        return jsonify({"message": "There was an Error in establishing a connection to the MySQL Database"}), 500
 
-# Creating the application for flask fo CRUD operations
+# Creating the application for flask for CRUD operations
 app = Flask(__name__)
 
+#----------------------------------------------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------------------------------------
+
+# Creating a Login API
+user_name = "huzaifa.project"
+password_pw = "wow_strong_pw_lol"
+
+@app.route('/login', methods=['POST'])
+def login_api():
+    data = request.get_json()
+
+    if 'user_name' not in data or 'password_pw' not in data:
+        return jsonify({"message": "Please enter your User name and Password for access!"}), 
+
+    if data['user_name'] == user_name and data['password_pw'] == password_pw:
+        return jsonify({"message": "Access Granted! Welcome."})
+    else:
+        return jsonify({"message": "You have entered an incorrect Username or Password! Please try again."}),
 
 
 # CRUD Operations part of the Project
@@ -404,3 +426,8 @@ def delete_Child(Child_id):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+# End of Code for CIS 3368 Project Part 1 - Backend (Python), Professor Otto Dobretsberger.
+#----------------------------------------------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------------------------------------
