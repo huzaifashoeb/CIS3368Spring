@@ -128,3 +128,82 @@ def delete_Facility(Facility_id):
     finally:
         cursor.close()
 
+# CRUD operations for the Classes
+# Routes for CRUD operations on Classrooms
+
+@app.route('/Classrooms', methods=['GET'])
+def Classrooms_grab():
+    try:
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM Classroom")
+        Classrooms = cursor.fetchall()
+        return jsonify(Classrooms)
+    except Error as e:
+        return error_connecting()
+    finally:
+        cursor.close()
+
+@app.route('/Classrooms', methods=['POST'])
+def add_Classroom():
+    try:
+        data = request.get_json()
+        facility_id = data.get('facility_id')
+
+        # Check if the specified facility_id exists
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM facility WHERE id = %s", (facility_id,))
+        facility = cursor.fetchone()
+        cursor.close()
+
+        if not facility:
+            return jsonify({"message": f"The Facility {facility_id} does not exist"}), 404
+
+        # Add the Classroom if the facility exists
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO Classroom (capacity, name, facility_id) VALUES (%s, %s, %s)", 
+                       (data['capacity'], data['name'], facility_id))
+        connection.commit()
+        return jsonify({"message": "The Classroom is added and ready for use!"})
+    except Error as e:
+        return error_connecting()
+    finally:
+        cursor.close()
+
+@app.route('/Classrooms/<int:Classroom_id>', methods=['PUT'])
+def update_Classroom(Classroom_id):
+    try:
+        data = request.get_json()
+        facility_id = data.get('facility_id')
+
+        # Check if the specified facility_id exists
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM facility WHERE id = %s", (facility_id,))
+        facility = cursor.fetchone()
+        cursor.close()
+
+        if not facility:
+            return jsonify({"message": f"The Facility {facility_id} does not exist"}), 404
+
+        # Update the Classroom if the facility exists
+        cursor = connection.cursor()
+        cursor.execute("UPDATE Classroom SET capacity = %s, name = %s, facility_id = %s WHERE id = %s", 
+                       (data['capacity'], data['name'], facility_id, Classroom_id))
+        connection.commit()
+        return jsonify({"message": "Classroom update successful!"})
+    except Error as e:
+        return error_connecting()
+    finally:
+        cursor.close()
+
+@app.route('/Classrooms/<int:Classroom_id>', methods=['DELETE'])
+def delete_Classroom(Classroom_id):
+    try:
+        cursor = connection.cursor()
+        cursor.execute("DELETE FROM Classroom WHERE id = %s", (Classroom_id,))
+        connection.commit()
+        return jsonify({"message": "The Classroom is deleted and not available for use!"})
+    except Error as e:
+        return error_connecting()
+    finally:
+        cursor.close()
+
