@@ -56,3 +56,75 @@ connection = mysql.connector.connect(
 #     FOREIGN KEY (Room) REFERENCES Classroom(id)
 # );
 
+# Confirming the connection to the db is established
+if connection.is_connected():
+    print("Connection to MySQL databse successful!")
+
+# Checking if the connection to db was not successful
+def error_connecting():
+    if not connection.is_connected():
+        return jsonify({"message": "There was an Error in establishing connection to the MySQL Database"}), 200
+
+# Creating the application for flask fo CRUD operations
+app = Flask(__name__)
+
+
+
+# CRUD Operations part of the Project
+# CRUD operations for the Facilities
+# GET for Facilities
+@app.route('/Facilities', methods=['GET'])
+def Facilities_grab():
+    try:
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM Facility")
+        Facilities = cursor.fetchall()
+        return jsonify(Facilities)
+    except Error as e:
+        return error_connecting()
+    finally:
+        cursor.close()
+
+# POST for Facilities
+@app.route('/Facilities', methods=['POST'])
+def add_Facility():
+    try:
+        data = request.get_json()
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO Facility (name) VALUES (%s)", (data['name'],))
+        connection.commit()
+        return jsonify({"message": "New Facility is now available for use!"})
+    except Error as e:
+        return error_connecting()
+    finally:
+        cursor.close()
+
+
+# PUT for Facilities
+@app.route('/Facilities/<int:Facility_id>', methods=['PUT'])
+def update_Facility(Facility_id):
+    try:
+        data = request.get_json()
+        cursor = connection.cursor()
+        cursor.execute("UPDATE Facility SET name = %s WHERE id = %s", (data['name'], Facility_id))
+        connection.commit()
+        return jsonify({"message": "Facility update successful!"})
+    except Error as e:
+        return error_connecting()
+    finally:
+        cursor.close()
+
+
+# DELETE for Facilities
+@app.route('/Facilities/<int:Facility_id>', methods=['DELETE'])
+def delete_Facility(Facility_id):
+    try:
+        cursor = connection.cursor()
+        cursor.execute("DELETE FROM Facility WHERE id = %s", (Facility_id,))
+        connection.commit()
+        return jsonify({"message": "Facility is deleted and unavailable for use now!"})
+    except Error as e:
+        return error_connecting()
+    finally:
+        cursor.close()
+
